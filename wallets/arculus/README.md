@@ -1,4 +1,4 @@
-# @cosmos-kit/keplr
+# @cosmos-kit/arculus
 
 <p align="center" width="100%">
     <img height="90" src="https://user-images.githubusercontent.com/545047/190171432-5526db8f-9952-45ce-a745-bea4302f912b.svg" />
@@ -8,13 +8,13 @@
   <a href="https://github.com/hyperweb-io/cosmos-kit/actions/workflows/run-tests.yml">
     <img height="20" src="https://github.com/hyperweb-io/cosmos-kit/actions/workflows/run-tests.yml/badge.svg" />
   </a>
-   <a href="https://github.com/hyperweb-io/cosmos-kit/blob/main/wallets/keplr/LICENSE"><img height="20" src="https://img.shields.io/badge/license-BSD%203--Clause%20Clear-blue.svg"></a>
-   <a href="https://www.npmjs.com/package/@cosmos-kit/keplr"><img height="20" src="https://img.shields.io/github/package-json/v/hyperweb-io/cosmos-kit?filename=wallets%2Fkeplr%2Fpackage.json"></a>
+   <a href="https://github.com/hyperweb-io/cosmos-kit/blob/main/wallets/arculus/LICENSE"><img height="20" src="https://img.shields.io/badge/license-BSD%203--Clause%20Clear-blue.svg"></a>
+   <a href="https://www.npmjs.com/package/@cosmos-kit/arculus"><img height="20" src="https://img.shields.io/github/package-json/v/hyperweb-io/cosmos-kit?filename=wallets%2Farculus%2Fpackage.json"></a>
 </p>
 
 Cosmos Kit is a universal wallet adapter for developers to build apps that quickly and easily interact with Cosmos blockchains and wallets.
 
-@cosmos-kit/keplr is the Keplr integration for CosmosKit.
+@cosmos-kit/arculus is the Arculus integration for CosmosKit.
 
 ## Interchain JavaScript Stack 
 
