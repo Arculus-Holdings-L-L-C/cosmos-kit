@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@interchain-ui/react/styles";
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
+import { wallets as arculusWallets } from "@cosmos-kit/arculus";
 import { wallets as ctrlWallets } from "@cosmos-kit/ctrl";
 import { ChainProvider } from "@cosmos-kit/react-lite";
 import { assets, chains } from "chain-registry";
@@ -13,7 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ChainProvider
       chains={[...chains.filter((c) => c.chain_name == "cosmoshub")]}
       assetLists={[...assets.filter((a) => a.chain_name === "cosmoshub")]}
-      wallets={[...keplrWallets, ...ctrlWallets]}
+      wallets={[...keplrWallets, ...arculusWallets, ...ctrlWallets]}
       logLevel={"DEBUG"}
       walletModal={CustomModal}
     >
