@@ -50,7 +50,6 @@
     "url": "https://github.com/hyperweb-io/cosmos-kit/issues"
   },
   "dependencies": {
-    "@cosmos-kit/arculus-extension": "^0.1.0",
     "@cosmos-kit/arculus-mobile": "^0.1.0"
   }
 }

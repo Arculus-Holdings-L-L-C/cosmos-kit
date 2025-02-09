@@ -26,7 +26,7 @@ export const arculusMobileInfo: Wallet = {
       link: 'https://www.getarculus.com/',
     },
   ],
-  connectEventNamesOnWindow: ['keplr_keystorechange'],
+  connectEventNamesOnWindow: ['arculus_keystorechange'],
   supportedChains: [
     'cosmoshub',
     'osmosis',
@@ -39,9 +39,9 @@ export const arculusMobileInfo: Wallet = {
     encoding: 'base64',
     requiredNamespaces: {
       methods: [
-                'cosmos_getAccounts',
-                'cosmos_signDirect',
-                'cosmos_signAmino',
+        'cosmos_getAccounts',
+        'cosmos_signDirect',
+        'cosmos_signAmino',
       ],
       events: ['accountsChanged', 'chainChanged'],
     },
