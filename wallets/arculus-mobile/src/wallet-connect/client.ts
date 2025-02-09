@@ -26,7 +26,7 @@ export class ArculusClient extends WCClient {
     super(walletInfo);
   }
 
-  initArculusWCClient(
+  initKeplrWCClient(
     signClient: SignClient,
     options: {
       sessionProperties?: ProposalTypes.SessionProperties;
@@ -85,7 +85,7 @@ export class ArculusClient extends WCClient {
       );
 
       if (allSessions.length > 0 && currentSession) {
-        this.initArculusWCClient(this.signClient, {
+        this.initKeplrWCClient(this.signClient, {
           sessionProperties: currentSession.sessionProperties,
         });
         return;
