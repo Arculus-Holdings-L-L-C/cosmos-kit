@@ -40,10 +40,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/hyperweb-io/cosmos-kit"
-  },
+  "repository": "https://github.com/hyperweb-io/cosmos-kit",
   "keywords": [
     "cosmos",
     "cosmos-kit",
