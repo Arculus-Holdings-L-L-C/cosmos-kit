@@ -87,6 +87,7 @@
     "@cosmos-kit/owallet": "^2.14.6",
     "@cosmos-kit/shell": "^2.13.7",
     "@cosmos-kit/tailwind": "^1.7.6",
-    "@cosmos-kit/trust": "^2.13.7"
+    "@cosmos-kit/trust": "^2.13.7",
+    "@cosmos-kit/arculus": "^0.1.0"
   }
 }
