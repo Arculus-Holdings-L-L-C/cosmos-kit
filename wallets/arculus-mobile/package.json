@@ -1,7 +1,7 @@
 {
   "name": "@cosmos-kit/arculus-mobile",
   "version": "0.1.0",
-  "description": "arculus mobile wallet connector",
+  "description": "arculus cosmos-kit wallet connector",
   "author": "jostrom@arculus.co",
   "contributors": [
     {
