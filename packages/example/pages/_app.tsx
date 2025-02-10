@@ -12,7 +12,6 @@ import { wallets as coin98Wallets } from "@cosmos-kit/coin98";
 import { ChainName } from "@cosmos-kit/core";
 import { MainWalletBase } from "@cosmos-kit/core";
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
-import { wallets as arculusWallets } from "@cosmos-kit/arculus";
 import { wallets as leapWallets } from "@cosmos-kit/leap";
 import { wallets as owalletWallets } from "@cosmos-kit/owallet";
 // Show how to custom modal views
@@ -32,7 +31,6 @@ import { RootLayout } from "../components/layout";
 function MyApp({ Component, pageProps }: AppProps) {
   const defaultWallets: MainWalletBase[] = [
     ...keplrWallets,
-    ...arculusWallets,
     ...leapWallets,
     ...owalletWallets,
   ];
@@ -66,7 +64,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         return CapsuleModule.wallets;
       })
       .then((leapSocialLogin) => {
-        setWallets([...keplrWallets, ...arculusWallets, ...leapWallets, ...leapSocialLogin]);
+        setWallets([...keplrWallets, ...leapWallets, ...leapSocialLogin]);
         setLoadingWallet(false);
       });
   }, []);
@@ -86,7 +84,6 @@ function MyApp({ Component, pageProps }: AppProps) {
           // ...wallets,
           ...owalletWallets,
           ...keplrWallets,
-          ...arculusWallets,
           ...leapWallets,
 
           // ...ninjiWallets,

@@ -8,7 +8,6 @@ import { wallets as galaxyStationExtension } from '@cosmos-kit/galaxy-station-ex
 import { wallets as galaxyStationMobile } from '@cosmos-kit/galaxy-station-mobile';
 import { wallets as keplrExtension } from '@cosmos-kit/keplr-extension';
 import { wallets as keplrMobile } from '@cosmos-kit/keplr-mobile';
-import { wallets as arculusMobile } from '@cosmos-kit/arculus-mobile';
 import { wallets as owalletExtension } from '@cosmos-kit/owallet-extension';
 import { wallets as owalletMobile } from '@cosmos-kit/owallet-mobile';
 import { wallets as leapExtension } from '@cosmos-kit/leap-extension';
@@ -42,7 +41,6 @@ export type WalletName =
   | 'owallet'
   | 'exodus'
   | 'galaxystation'
-  | 'arculus'
   | 'cdcwallet';
 
 export type WalletList<
@@ -103,7 +101,6 @@ export const exodus = createWalletList(exodusExtension[0], null);
 export const tailwind = createWalletList(tailwindWallet[0], null);
 export const owallet = createWalletList(owalletExtension[0], owalletMobile[0]);
 export const cdcwallet = createWalletList(cdcwalletExtension[0], null);
-export const arculus = createWalletList(arculusMobile[0], null);
 
 export type SubWalletList = MainWalletBase[] & {
   get mobile(): MainWalletBase[];
@@ -123,7 +120,6 @@ export type AllWalletList = SubWalletList & {
   coin98: typeof coin98;
   compass: typeof compass;
   exodus: typeof exodus;
-  arculus: typeof arculus;
   tailwind: typeof tailwind;
   owallet: typeof owallet;
   cdcwallet: typeof cdcwallet;
@@ -168,7 +164,6 @@ export function createAllWalletList(ws: MainWalletBase[]) {
   wallets.owallet = owallet;
   wallets.cdcwallet = cdcwallet;
   wallets.galaxystation = galaxystation;
-  wallets.arculus = arculus;
 
   defineGetters(wallets);
 
@@ -217,5 +212,4 @@ export const wallets = createAllWalletList([
   ...owallet,
   ...cdcwallet,
   ...galaxystation,
-  ...arculus,
 ]);

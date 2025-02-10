@@ -4,7 +4,6 @@ import { wallets as leapWallets } from "@cosmos-kit/leap";
 import { wallets as stationWallets } from "@cosmos-kit/station";
 import { wallets as coin98Wallets } from "@cosmos-kit/coin98";
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
-import { wallets as arculusWallets } from "@cosmos-kit/arculus";
 import { wallets as oWallets } from "@cosmos-kit/owallet";
 import { assets } from "chain-registry";
 import { Button } from "components/button";
@@ -16,7 +15,6 @@ export default () => {
       ["cosmoshub", "juno", "stargaze"],
       [
         keplrWallets[0],
-        arculusWallets[0],
         oWallets[0],
         leapWallets[0],
         stationWallets[0],
