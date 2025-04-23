@@ -43,10 +43,10 @@ function MyApp({ Component, pageProps }: AppProps) {
           signClient: {
             projectId: "d5235b42fc7273823b6dc3214c822da3",
             metadata: {
-              name: "Cosmos Kit Example",
-              description: "Cosmos Kit Example App",
-              url: "https://cosmoskit.com",
-              icons: ["https://raw.githubusercontent.com/cosmology-tech/cosmos-kit/main/packages/example/public/favicon-32x32.png"],
+              name: "Arculus Wallet Cosmos Kit",
+              description: "Arculus Wallet Cosmos Kit",
+              url: "https://www.arculus.co",
+              icons: ["https://gw.arculus.co/icon/arc64.png"],
             },
             relayUrl: "wss://relay.walletconnect.com",
           },
