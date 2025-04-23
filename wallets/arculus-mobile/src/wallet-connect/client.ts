@@ -83,31 +83,31 @@ export class ArculusClient extends WCClient {
       if (this.signClient) {
         const sessions = this.signClient.session.getAll()
         for (const session of sessions) {
-          await this.signClient.session.delete(session.topic, {
-            code: 7001,
-            message: 'Clear existing session',
-          })
+          // Only clear sessions that belong to Arculus
+          if (session.peer.metadata.name === 'Arculus Wallet') {
+            await this.signClient.session.delete(session.topic, {
+              code: 7001,
+              message: 'Clear existing Arculus session',
+            })
+          }
         }
 
         const pairings = this.signClient.pairing.getAll()
         for (const pairing of pairings) {
-          await this.signClient.pairing.delete(pairing.topic, {
-            code: 7001,
-            message: 'Clear existing pairing',
-          })
+          // Only clear pairings that belong to Arculus
+          if (pairing.peerMetadata?.name === 'Arculus Wallet') {
+            await this.signClient.pairing.delete(pairing.topic, {
+              code: 7001,
+              message: 'Clear existing Arculus pairing',
+            })
+          }
         }
       }
 
-      // Reset state
-      this.setQRState(State.Init)
-      this.qrUrl.data = undefined
-      this.sessions = []
-      this.pairings = []
-
-      // Force a complete reinitialization
-      this.signClient = undefined
-      await this.init()
+      // Clear local storage
+      await this.clearBrowserStorage()
     } catch (error) {
+      console.error('Error resetting client:', error)
       throw error
     }
   }
