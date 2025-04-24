@@ -59,14 +59,12 @@ export class ArculusClient extends WCClient {
         }
       }
 
-      // Call parent init method
-      await super.init()
-      console.log('Parent init completed')
-
-      // Ensure we have a valid signClient
+      // Initialize the sign client if needed
       if (!this.signClient) {
-        console.error('SignClient not initialized after parent init')
-        throw new Error('SignClient not initialized')
+        await this.initSignClient()
+      } else {
+        // If we already have a client, make sure our sessions are up to date
+        this.restoreSessions()
       }
 
       console.log('ArculusClient initialization complete')
@@ -164,11 +162,15 @@ export class ArculusClient extends WCClient {
         this.connectionTimeout = null
       }
 
-      // Reset client state
-      await this.resetClient()
+      // Reset QR state rather than doing a full client reset
+      this.setQRState(State.Init)
+      this.qrUrl.data = undefined
 
-      // Clear browser storage
-      await this.clearBrowserStorage()
+      // We don't clear existing sessions here to allow for reconnection
+      // Only clear localStorage for fresh/problematic connections
+
+      // For debugging
+      await this.debugWalletConnectStorage()
     } catch (error) {
       throw error
     }
@@ -314,7 +316,30 @@ export class ArculusClient extends WCClient {
     console.log('ArculusClient connect method called with chainIds:', chainIds)
 
     try {
-      // Clean up any previous connection state
+      // Clear any previous connection timeout
+      if (this.connectionTimeout) {
+        clearTimeout(this.connectionTimeout)
+        this.connectionTimeout = null
+      }
+
+      // Make sure the client is initialized
+      if (!this.signClient) {
+        await this.init()
+      }
+
+      // Try to restore existing sessions and check if we have a valid one
+      this.restoreSessions()
+      const existingSession = this.sessions[0]
+      if (existingSession && existingSession.expiry * 1000 > Date.now()) {
+        console.log('Using existing session:', existingSession.topic)
+        this.setupSessionEventListeners()
+
+        // Let the app know we're ready
+        this.setQRState(State.Done)
+        return
+      }
+
+      // No valid session found, clean up and create a new connection
       await this.cleanupPreviousConnection()
 
       // Set connection timeout
@@ -411,12 +436,16 @@ export class ArculusClient extends WCClient {
   }
 
   private setupSessionEventListeners() {
-    if (!this.signClient) return
+    if (!this.signClient) {
+      console.error('Cannot setup session listeners: SignClient not initialized')
+      return
+    }
 
-    // Remove any existing listeners first
+    // Remove any existing listeners first to prevent duplicates
     this.signClient.removeAllListeners('session_delete')
     this.signClient.removeAllListeners('session_expire')
     this.signClient.removeAllListeners('session_update')
+    this.signClient.removeAllListeners('session_event')
 
     // Listen for session deletion (wallet disconnects)
     this.signClient.on('session_delete', async (event) => {
@@ -437,19 +466,43 @@ export class ArculusClient extends WCClient {
     // Listen for session update (which might indicate a disconnect)
     this.signClient.on('session_update', async (event) => {
       console.log('Session updated:', event)
-      if ('topic' in event && event.params?.namespaces === undefined) {
-        await this.handleWalletDisconnect(event.topic)
+      if ('topic' in event) {
+        // Check if the update includes namespace changes
+        if (event.params?.namespaces === undefined) {
+          await this.handleWalletDisconnect(event.topic)
+        } else {
+          console.log('Session namespace updated')
+        }
       }
     })
+
+    // Listen for session events like account changes
+    this.signClient.on('session_event', (event) => {
+      console.log('Session event received:', event)
+      if (event.params?.event?.name === 'accountsChanged') {
+        console.log('Accounts changed event received')
+        // Emit an event that the dApp can listen for
+        this.emitter?.emit('account_changed', event.params.event.data)
+      } else if (event.params?.event?.name === 'chainChanged') {
+        console.log('Chain changed event received')
+        // Emit an event that the dApp can listen for
+        this.emitter?.emit('chain_changed', event.params.event.data)
+      }
+    })
+
+    console.log('Session event listeners setup complete')
   }
 
   private async handleWalletDisconnect(topic: string) {
     this.logger?.debug('Handling wallet disconnect for topic:', topic)
 
     // Check if this is our current session
-    const currentSession = this.sessions[0]
-    if (currentSession && currentSession.topic === topic) {
+    const currentSession = this.sessions.find(session => session.topic === topic)
+    if (currentSession) {
       this.logger?.debug('Current session disconnected, cleaning up...')
+
+      // Remove from our sessions array
+      this.sessions = this.sessions.filter(session => session.topic !== topic)
 
       // Clear the session
       if (this.signClient) {
@@ -460,15 +513,16 @@ export class ArculusClient extends WCClient {
           })
         } catch (error) {
           this.logger?.error('Failed to delete session:', error)
-          throw new SessionError('Failed to delete session')
+          // Continue with cleanup even if session deletion fails
         }
       }
 
-      // Reset state
-      this.setQRState(State.Init)
-      this.qrUrl.data = undefined
-      this.sessions = []
-      this.pairings = []
+      // Reset state if we have no more sessions
+      if (this.sessions.length === 0) {
+        this.setQRState(State.Init)
+        this.qrUrl.data = undefined
+        this.pairings = []
+      }
 
       // Emit disconnect event to notify the dApp
       this.emitter?.emit('disconnect')
@@ -485,16 +539,82 @@ export class ArculusClient extends WCClient {
         this.connectionTimeout = null
       }
 
-      // Call parent disconnect
-      await super.disconnect(options)
+      if (this.sessions.length > 0) {
+        console.log('Disconnecting active sessions')
 
-      // Clean up after disconnect
-      await this.cleanupPreviousConnection()
+        // For each active session, properly disconnect
+        for (const session of this.sessions) {
+          try {
+            if (this.signClient) {
+              await this.signClient.session.delete(session.topic, {
+                code: 6000,
+                message: 'User disconnected',
+              })
+            }
+          } catch (error) {
+            console.error('Error disconnecting session:', error)
+            // Continue with other sessions even if one fails
+          }
+        }
+      }
+
+      // Reset client state completely on disconnect
+      await this.forceReset()
 
       console.log('Disconnect complete')
     } catch (error) {
       console.error('Error during disconnect:', error)
       throw error
+    }
+  }
+
+  async tryReconnect(chainIds: string | string[]) {
+    console.log('Attempting to reconnect with existing session')
+
+    try {
+      // Ensure the client is initialized
+      if (!this.signClient) {
+        await this.init()
+      }
+
+      // Restore and check sessions
+      this.restoreSessions()
+
+      if (this.sessions.length > 0) {
+        console.log('Found existing session, reconnecting')
+        this.setupSessionEventListeners()
+        this.setQRState(State.Done)
+        return true
+      }
+
+      console.log('No valid sessions found for reconnection')
+      return false
+    } catch (error) {
+      console.error('Error during reconnection attempt:', error)
+      return false
+    }
+  }
+
+  // Method to manually restore sessions
+  restoreSessions() {
+    if (typeof this.signClient === 'undefined') {
+      console.log('SignClient not initialized for session restoration')
+      return
+    }
+
+    try {
+      this.sessions = this.signClient.session
+        .getAll()
+        .filter(
+          (s) =>
+            s.peer.metadata.name === 'Arculus Wallet' &&
+            s.expiry * 1000 > Date.now() + 1000
+        )
+      console.log(`Restored ${this.sessions.length} sessions`)
+      this.logger?.debug('RESTORED SESSIONS: ', this.sessions)
+    } catch (error) {
+      console.error('Error restoring sessions:', error)
+      this.sessions = []
     }
   }
 }
