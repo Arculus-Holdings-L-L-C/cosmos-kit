@@ -65,7 +65,7 @@ export function getChainWalletContext(
     wallet: wallet?.walletInfo,
     address: wallet?.address,
     username: wallet?.username,
-    message: wallet ? wallet.message : 'No wallet is connected walletly.',
+    message: wallet ? wallet.message : 'No wallet is connected currently.',
     status,
 
     isWalletDisconnected: status === 'Disconnected',
