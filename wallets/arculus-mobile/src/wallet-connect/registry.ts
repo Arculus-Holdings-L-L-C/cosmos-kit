@@ -36,7 +36,7 @@ export const ArculusMobileInfo: Wallet = {
     mobile: {
       native: {
         ios: 'arculuswc:',
-        android: 'wc:',
+        android: 'arculuswc:',
       },
       universal: 'https://gw.arculus.co/app/wc'
     },
