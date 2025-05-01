@@ -297,6 +297,14 @@
     "@cosmos-kit/react-lite" "^2.16.0"
     "@react-icons/all-files" "^4.1.0"
 
+"@cosmos-kit/trust-mobile@^2.13.0":
+  version "2.13.0"
+  resolved "https://registry.yarnpkg.com/@cosmos-kit/trust-mobile/-/trust-mobile-2.13.0.tgz#b5b1d63b6508c0fdc77fd9507a6bc035ffdfd62c"
+  integrity sha512-x3UtfPJshCtoBw8C2mroSaLoFo03X4wrQY2fOKgVp4jZvhgkFVOPQFBgKeFEVsmy71jP7CfqvPPPFskdxMfqvw==
+  dependencies:
+    "@cosmos-kit/core" "^2.16.0"
+    "@cosmos-kit/walletconnect" "^2.13.0"
+
 "@cosmos-kit/walletconnect@^2.12.5":
   version "2.12.5"
   resolved "https://registry.yarnpkg.com/@cosmos-kit/walletconnect/-/walletconnect-2.12.5.tgz#3aaf12765283bd927055a36155d86fd8b8c22602"

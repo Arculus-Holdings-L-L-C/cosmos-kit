@@ -1,5 +1,5 @@
 {
-  "name": "cosmos-kit-nextjs-app-router-example",
+  "name": "yarn",
   "version": "0.2.0",
   "private": true,
   "scripts": {
@@ -10,9 +10,10 @@
   },
   "dependencies": {
     "@cosmos-kit/arculus-mobile": "^0.1.1",
-    "@cosmos-kit/leap-mobile": "^2.8.5",
     "@cosmos-kit/keplr": "^2.15.0",
+    "@cosmos-kit/leap-mobile": "^2.8.5",
     "@cosmos-kit/react": "^2.22.0",
+    "@cosmos-kit/trust-mobile": "^2.13.0",
     "@interchain-ui/react": "latest",
     "@radix-ui/react-slot": "^1.1.2",
     "chain-registry": "*",
@@ -39,5 +40,7 @@
   "resolutions": {
     "@cosmos-kit/keplr": "file:../../wallets/keplr",
     "@cosmos-kit/react": "file:../../packages/react"
-  }
+  },
+  "main": "index.js",
+  "license": "MIT"
 }

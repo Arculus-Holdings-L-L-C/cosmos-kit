@@ -5,6 +5,8 @@ import { ChainProvider } from "@cosmos-kit/react";
 import { chains, assets } from "chain-registry";
 import { wallets as arculusWallets } from "@cosmos-kit/arculus-mobile";
 import { wallets as leapMobileWallets } from "@cosmos-kit/leap-mobile";
+import { wallets as keplrMobileWallets } from "@cosmos-kit/keplr-mobile";
+import { wallets as trustMobileWallets } from "@cosmos-kit/trust-mobile";
 import { MainWalletBase } from "@cosmos-kit/core";
 
 // Define WalletConnect Options using Arculus projectId
@@ -24,7 +26,7 @@ const walletConnectOptions = {
 };
 
 // Combine wallet arrays
-const combinedWallets = [...arculusWallets, ...leapMobileWallets] as unknown as MainWalletBase[];
+const combinedWallets = [...arculusWallets, ...leapMobileWallets, ...keplrMobileWallets, ...trustMobileWallets] as unknown as MainWalletBase[];
 
 export function CosmosKitProvider({ children }: { children: React.ReactNode }) {
   return (
