@@ -32,11 +32,11 @@ export const ArculusMobileInfo: Wallet = {
   walletconnect: {
     name: 'Arculus Wallet',
     projectId: 'd5235b42fc7273823b6dc3214c822da3',
-    encoding: 'base64', 
+    encoding: 'base64',
     mobile: {
       native: {
         ios: 'arculuswc:',
-        android: 'arculuswc:',
+        android: 'intent:',
       },
       universal: 'https://gw.arculus.co/app/wc'
     },
@@ -49,8 +49,10 @@ export const ArculusMobileInfo: Wallet = {
       const plainAppUrl = appUrl.split(':')[0];
       const encodedWcUrl = encodeURIComponent(wcUri);
       switch (os) {
+        case 'android':
+          return `${plainAppUrl}://wcV2?${encodedWcUrl}#Intent;package=co.arculus.wallet.android;scheme=arculuswc;end;`;
         default:
-          return `${plainAppUrl}://wc?uri=${encodedWcUrl}`;
+          return `${plainAppUrl}://wcV2?${encodedWcUrl}`;
       }
     },
   },
