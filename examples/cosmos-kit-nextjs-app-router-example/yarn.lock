@@ -271,6 +271,15 @@
     "@cosmos-kit/keplr-extension" "^2.15.0"
     "@cosmos-kit/keplr-mobile" "^2.15.0"
 
+"@cosmos-kit/leap-mobile@^2.8.5":
+  version "2.14.0"
+  resolved "https://registry.yarnpkg.com/@cosmos-kit/leap-mobile/-/leap-mobile-2.14.0.tgz#8d2ec10f054f00518dc13046111567def5a61f50"
+  integrity sha512-ZBndYzl2rymuhw42HQuJ+n+qAEzcy+ISV026hEPG5YuKlOcd4iokXUOFUC8tLaVRSiiGJrLn9Sh/+XxUWbx5eA==
+  dependencies:
+    "@chain-registry/keplr" "^1.69.13"
+    "@cosmos-kit/core" "^2.16.0"
+    "@cosmos-kit/walletconnect" "^2.13.0"
+
 "@cosmos-kit/react-lite@^2.16.0":
   version "2.16.0"
   resolved "https://registry.yarnpkg.com/@cosmos-kit/react-lite/-/react-lite-2.16.0.tgz#f7eb23930965a242209e6480c89689f3bd11eed5"

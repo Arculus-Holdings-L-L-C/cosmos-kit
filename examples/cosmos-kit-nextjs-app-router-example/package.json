@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@cosmos-kit/arculus-mobile": "^0.1.1",
+    "@cosmos-kit/leap-mobile": "^2.8.5",
     "@cosmos-kit/keplr": "^2.15.0",
     "@cosmos-kit/react": "^2.22.0",
     "@interchain-ui/react": "latest",

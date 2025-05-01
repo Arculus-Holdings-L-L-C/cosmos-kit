@@ -4,6 +4,7 @@ import "@interchain-ui/react/styles";
 import { ChainProvider } from "@cosmos-kit/react";
 import { chains, assets } from "chain-registry";
 import { wallets as arculusWallets } from "@cosmos-kit/arculus-mobile";
+import { wallets as leapMobileWallets } from "@cosmos-kit/leap-mobile";
 import { MainWalletBase } from "@cosmos-kit/core";
 
 // Define WalletConnect Options using Arculus projectId
@@ -22,12 +23,15 @@ const walletConnectOptions = {
   },
 };
 
+// Combine wallet arrays
+const combinedWallets = [...arculusWallets, ...leapMobileWallets] as unknown as MainWalletBase[];
+
 export function CosmosKitProvider({ children }: { children: React.ReactNode }) {
   return (
     <ChainProvider
       chains={chains}
       assetLists={assets}
-      wallets={arculusWallets as unknown as MainWalletBase[]}
+      wallets={combinedWallets}
       logLevel={"DEBUG"}
       throwErrors={false}
       modalOptions={{
