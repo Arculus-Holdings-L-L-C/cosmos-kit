@@ -52,7 +52,7 @@ export const ArculusMobileInfo: Wallet = {
         case 'android':
           return `${plainAppUrl}://wcV2?${encodedWcUrl}#Intent;package=co.arculus.wallet.android;scheme=arculuswc;end;`;
         default:
-          return `${plainAppUrl}://wcV2?${encodedWcUrl}`;
+          return `${plainAppUrl}://wc?${encodedWcUrl}`;
       }
     },
   },
