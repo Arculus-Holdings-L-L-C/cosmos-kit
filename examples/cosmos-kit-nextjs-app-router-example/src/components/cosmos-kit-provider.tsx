@@ -25,17 +25,17 @@ const walletConnectOptions = {
   },
 };
 
-// Combine wallet arrays
-const combinedWallets = [...arculusWallets, ...leapMobileWallets, ...keplrMobileWallets, ...trustMobileWallets] as unknown as MainWalletBase[];
+// Use Arculus and Trust wallets
+const wallets = [...arculusWallets, ...trustMobileWallets] as unknown as MainWalletBase[];
 
 export function CosmosKitProvider({ children }: { children: React.ReactNode }) {
   return (
     <ChainProvider
       chains={chains}
       assetLists={assets}
-      wallets={combinedWallets}
+      wallets={wallets}
       logLevel={"DEBUG"}
-      throwErrors={false}
+      throwErrors={true}
       modalOptions={{
         mobile: { displayQRCodeEveryTime: true }
       }}

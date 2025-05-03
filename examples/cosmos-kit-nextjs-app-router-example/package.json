@@ -42,6 +42,7 @@
     "@cosmos-kit/arculus-mobile": "file:../../wallets/arculus-mobile",
     "@cosmos-kit/keplr": "file:../../wallets/keplr",
     "@cosmos-kit/react": "file:../../packages/react",
+    "@cosmos-kit/trust-mobile": "file:../../wallets/trust-mobile",
     "@cosmos-kit/walletconnect": "file:../../packages/walletconnect"
   },
   "main": "index.js",
