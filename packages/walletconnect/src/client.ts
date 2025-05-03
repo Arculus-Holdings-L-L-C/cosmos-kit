@@ -345,7 +345,7 @@ export class WCClient implements WalletClient {
     if (!this.wcCloudInfo) await this.initWCCloudInfo();
 
     try {
-      const mobile = this.wcMobile || (this.wcCloudInfo?.mobile);
+      const mobile = this.wcMobile || this.wcCloudInfo?.mobile;
 
       this.appUrl.data = {
         native: mobile?.native || {},
