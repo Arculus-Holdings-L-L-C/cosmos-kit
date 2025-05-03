@@ -14,6 +14,7 @@
     "@cosmos-kit/leap-mobile": "^2.8.5",
     "@cosmos-kit/react": "^2.22.0",
     "@cosmos-kit/trust-mobile": "^2.13.0",
+    "@cosmos-kit/walletconnect": "^2.13.0",
     "@interchain-ui/react": "latest",
     "@radix-ui/react-slot": "^1.1.2",
     "chain-registry": "*",
@@ -38,8 +39,10 @@
     "typescript": "^5"
   },
   "resolutions": {
+    "@cosmos-kit/arculus-mobile": "file:../../wallets/arculus-mobile",
     "@cosmos-kit/keplr": "file:../../wallets/keplr",
-    "@cosmos-kit/react": "file:../../packages/react"
+    "@cosmos-kit/react": "file:../../packages/react",
+    "@cosmos-kit/walletconnect": "file:../../packages/walletconnect"
   },
   "main": "index.js",
   "license": "MIT"

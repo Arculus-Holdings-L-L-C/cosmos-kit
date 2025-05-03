@@ -203,6 +203,12 @@
     "@cosmos-kit/core" "^2.15.5"
     "@cosmos-kit/walletconnect" "^2.12.5"
 
+"@cosmos-kit/arculus-mobile@file:../../wallets/arculus-mobile":
+  version "0.1.2"
+  dependencies:
+    "@cosmos-kit/core" "^2.15.5"
+    "@cosmos-kit/walletconnect" "^2.12.5"
+
 "@cosmos-kit/core@^2.15.5":
   version "2.15.5"
   resolved "https://registry.yarnpkg.com/@cosmos-kit/core/-/core-2.15.5.tgz#35a230dae93fe22529fcef867d7e94523416ecf7"
@@ -305,21 +311,8 @@
     "@cosmos-kit/core" "^2.16.0"
     "@cosmos-kit/walletconnect" "^2.13.0"
 
-"@cosmos-kit/walletconnect@^2.12.5":
-  version "2.12.5"
-  resolved "https://registry.yarnpkg.com/@cosmos-kit/walletconnect/-/walletconnect-2.12.5.tgz#3aaf12765283bd927055a36155d86fd8b8c22602"
-  integrity sha512-tsLM7CZqHJctl2J1SPpjhxPRcYnnBdsUGRhS8citiW9Xi9Qk+9T/XdJOve9XF3+2oHhmgixbx2vY2zbJ57kNxg==
-  dependencies:
-    "@cosmjs/proto-signing" "^0.32.3"
-    "@cosmos-kit/core" "^2.15.5"
-    "@walletconnect/sign-client" "^2.9.0"
-    "@walletconnect/utils" "^2.9.0"
-    events "3.3.0"
-
-"@cosmos-kit/walletconnect@^2.13.0":
+"@cosmos-kit/walletconnect@^2.12.5", "@cosmos-kit/walletconnect@^2.13.0", "@cosmos-kit/walletconnect@file:../../packages/walletconnect":
   version "2.13.0"
-  resolved "https://registry.yarnpkg.com/@cosmos-kit/walletconnect/-/walletconnect-2.13.0.tgz#1fbfe45cf534eb654a6bf39ee3166ce45eca4c2e"
-  integrity sha512-sW8YG7o8wylsZF7IMTLPArBo29ccwb8PKdKYQZdGd4/nU3Lx+ELL/2Kjt3Eeav4YW5LmyrkOgFi0t60958YDGg==
   dependencies:
     "@cosmjs/proto-signing" "^0.32.3"
     "@cosmos-kit/core" "^2.16.0"
