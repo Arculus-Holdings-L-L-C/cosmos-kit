@@ -7,12 +7,6 @@ export class ArculusClient extends WCClient {
   }
 
   get wcMobile() {
-    return {
-      native: {
-        ios: 'arculuswc:',
-        android: 'intent:',
-      },
-      universal: 'https://gw.arculus.co/app/wc'
-    };
+    return this.walletInfo.walletconnect.mobile;
   }
 }
