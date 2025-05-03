@@ -328,10 +328,15 @@ export class WCClient implements WalletClient {
 
   async initWCCloudInfo() {
     const fetcUrl = `${EXPLORER_API}/v3/wallets?projectId=${this.dappProjectId}&sdks=sign_v2&search=${this.wcName}`;
-    const fetched = await (await fetch(fetcUrl)).json();
-    this.wcCloudInfo =
-      fetched.listings[this.walletInfo.walletconnect.projectId];
-    this.logger?.debug('WalletConnect Info:', this.wcCloudInfo);
+    let fetchData = await fetch(fetcUrl);
+    try {
+      const fetched = await (fetchData).json();
+      this.wcCloudInfo =
+        fetched.listings[this.walletInfo.walletconnect.projectId];
+      this.logger?.debug('WalletConnect Info:', this.wcCloudInfo);
+    } catch (error) {
+      this.logger?.error('WalletConnect error initializing Info:', error);
+    }
   }
 
   async initAppUrl() {
@@ -339,12 +344,20 @@ export class WCClient implements WalletClient {
 
     if (!this.wcCloudInfo) await this.initWCCloudInfo();
 
-    const native = this.wcCloudInfo.mobile.native || this.wcMobile?.native;
-    const universal =
-      this.wcCloudInfo.mobile.universal || this.wcMobile?.universal;
+    try {
+      const mobile = this.wcMobile || (this.wcCloudInfo?.mobile);
 
-    this.appUrl.data = { native, universal };
-    this.appUrl.state = State.Done;
+      this.appUrl.data = {
+        native: mobile?.native || {},
+        universal: mobile?.universal
+      };
+      this.appUrl.state = State.Done;
+    } catch (error) {
+      this.logger?.error('WalletConnect error in initAppUrl:', error);
+      this.appUrl.data = { native: {}, universal: undefined };
+      this.appUrl.state = State.Error;
+      this.appUrl.message = error instanceof Error ? error.message : String(error);
+    }
   }
 
   get nativeUrl() {
