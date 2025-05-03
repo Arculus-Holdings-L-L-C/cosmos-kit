@@ -108,6 +108,7 @@ export class WCClient implements WalletClient {
 
   // walletconnect wallet mobile link
   get wcMobile() {
+    // Base implementation - wallet-specific implementations should override as needed
     return this.walletInfo.walletconnect.mobile;
   }
 
@@ -327,24 +328,46 @@ export class WCClient implements WalletClient {
   }
 
   async initWCCloudInfo() {
-    const fetcUrl = `${EXPLORER_API}/v3/wallets?projectId=${this.dappProjectId}&sdks=sign_v2&search=${this.wcName}`;
-    const fetched = await (await fetch(fetcUrl)).json();
-    this.wcCloudInfo =
-      fetched.listings[this.walletInfo.walletconnect.projectId];
-    this.logger?.debug('WalletConnect Info:', this.wcCloudInfo);
+    try {
+      const fetcUrl = `${EXPLORER_API}/v3/wallets?projectId=${this.dappProjectId}&sdks=sign_v2&search=${this.wcName}`;
+      const fetched = await (await fetch(fetcUrl)).json();
+      this.wcCloudInfo =
+        fetched.listings[this.walletInfo.walletconnect.projectId];
+      this.logger?.debug('WalletConnect Info:', this.wcCloudInfo);
+    } catch (error) {
+      this.logger?.error('Error initializing WalletConnect Cloud info:', error);
+      // Let initAppUrl handle fallbacks
+    }
   }
 
   async initAppUrl() {
     this.appUrl.state = State.Pending;
 
-    if (!this.wcCloudInfo) await this.initWCCloudInfo();
+    try {
+      // Try to get WC Cloud info if it's not already set
+      if (!this.wcCloudInfo) {
+        try {
+          await this.initWCCloudInfo();
+        } catch (error) {
+          this.logger?.error('Error fetching WalletConnect Cloud info:', error);
+        }
+      }
 
-    const native = this.wcCloudInfo.mobile.native || this.wcMobile?.native;
-    const universal =
-      this.wcCloudInfo.mobile.universal || this.wcMobile?.universal;
+      // Use wcMobile (which can be overridden by wallet implementations) or fallback
+      const mobile = this.wcMobile || (this.wcCloudInfo?.mobile);
 
-    this.appUrl.data = { native, universal };
-    this.appUrl.state = State.Done;
+      // Set URL data with fallbacks to avoid errors
+      this.appUrl.data = {
+        native: mobile?.native || {},
+        universal: mobile?.universal
+      };
+      this.appUrl.state = State.Done;
+    } catch (error) {
+      this.logger?.error('Error in initAppUrl:', error);
+      this.appUrl.data = { native: {}, universal: undefined };
+      this.appUrl.state = State.Error;
+      this.appUrl.message = error instanceof Error ? error.message : String(error);
+    }
   }
 
   get nativeUrl() {
