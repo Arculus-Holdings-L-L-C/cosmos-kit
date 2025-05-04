@@ -5,4 +5,9 @@ export class ArculusClient extends WCClient {
   constructor(walletInfo: Wallet) {
     super(walletInfo)
   }
+
+  get wcMobile() {
+    // If network data is available, use it, otherwise fall back to config
+    return this.wcCloudInfo?.mobile || this.walletInfo.walletconnect.mobile;
+  }
 }
