@@ -980,103 +980,6 @@ When signing, use the pubkey from the signature response instead of the account.
     }
   };
 
-  // Add a simplified direct signing test
-  const handleSimpleSignTest = async () => {
-    try {
-      if (!wallet || status !== "Connected") {
-        throw new Error("Wallet not connected");
-      }
-
-      console.log("Starting simple sign test");
-      console.log("Address:", address);
-
-      // Create a very simple SignDoc without needing RPC
-      const simpleBodyBytes = new TextEncoder().encode("Test message to sign");
-      const simpleAuthBytes = new TextEncoder().encode("Simple auth info");
-
-      // Create a simple DirectSignDoc that doesn't require RPC
-      const simpleSignDoc: DirectSignDoc = {
-        bodyBytes: simpleBodyBytes,
-        authInfoBytes: simpleAuthBytes,
-        chainId: chain?.chain_id || "cosmoshub-4",
-        accountNumber: BigInt(1) // Just use 1 for testing
-      };
-
-      console.log("Simple SignDoc created");
-      console.log("bodyBytes length:", simpleBodyBytes.length);
-      console.log("authInfoBytes length:", simpleAuthBytes.length);
-
-      if (!chainContext.signDirect) {
-        throw new Error("signDirect method not available");
-      }
-
-      // Call signDirect with simplified doc
-      console.log("Calling signDirect with simplified doc...");
-      const response = await chainContext.signDirect(
-        address || "",
-        simpleSignDoc
-      );
-
-      // Log response details
-      try {
-        console.log("Got response from wallet!");
-        console.log("Response structure:", Object.keys(response));
-        if (response.signature) console.log("Signature present:", typeof response.signature);
-        if (response.signed) console.log("Signed present:", typeof response.signed);
-      } catch (e) {
-        console.log("Error examining response:", e);
-      }
-
-      let resultMsg = "Sign test succeeded!\n\n";
-
-      if (response.signature) {
-        resultMsg += "Signature details:\n";
-        if (response.signature.pub_key) {
-          resultMsg += `PubKey type: ${response.signature.pub_key.type || "unknown"}\n`;
-          try {
-            const pubkeyValue = response.signature.pub_key.value;
-            resultMsg += `PubKey value: ${typeof pubkeyValue === 'string' ?
-              pubkeyValue : (pubkeyValue ? Buffer.from(pubkeyValue).toString('base64') : 'undefined')}\n`;
-          } catch (e) {
-            resultMsg += `PubKey value error: ${e}\n`;
-          }
-        }
-
-        if (response.signature.signature) {
-          try {
-            resultMsg += `Signature: ${typeof response.signature.signature === 'string' ?
-              response.signature.signature : Buffer.from(response.signature.signature).toString('base64')}\n`;
-          } catch (e) {
-            resultMsg += `Signature error: ${e}\n`;
-          }
-        }
-      }
-
-      if (response.signed) {
-        resultMsg += "\nSigned document details:\n";
-        resultMsg += `ChainID: ${response.signed.chainId || 'undefined'}\n`;
-        resultMsg += `Account number: ${response.signed.accountNumber || 'undefined'}\n`;
-      }
-
-      setSignDirectMemoResult(resultMsg);
-
-      // Enhanced alert with more details
-      const alertMessage =
-        `Sign Test Succeeded!\n\n` +
-        `Signature: ${response.signature?.signature?.slice(0, 20)}...\n` +
-        `Public Key: ${response.signature?.pub_key?.value?.slice(0, 15)}...\n` +
-        `Chain ID: ${response.signed?.chainId}\n` +
-        `\nSee full details in the result box below`;
-
-      alert(alertMessage);
-
-    } catch (error: any) {
-      console.error("Error in simple sign test:", error);
-      setSignDirectMemoResult(`Error: ${error.message || String(error)}`);
-      alert(`Sign Test Failed: ${error.message || String(error)}`);
-    }
-  };
-
   const truncateAddress = (addr: string) => {
     if (!addr) return "";
     return `${addr.slice(0, 6)}...${addr.slice(-6)}`;
@@ -1181,13 +1084,6 @@ When signing, use the pubkey from the signature response instead of the account.
                       onClick={handleSignDirectMemo}
                     >
                       Test Sign Direct
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="w-full"
-                      onClick={handleSimpleSignTest}
-                    >
-                      Simple Sign Test
                     </Button>
                   </div>
                 </div>
