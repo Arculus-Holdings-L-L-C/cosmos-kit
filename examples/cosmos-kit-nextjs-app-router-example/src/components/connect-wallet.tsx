@@ -168,7 +168,7 @@ export function ConnectWallet() {
             format = isArculusWallet ?
               "Arculus placeholder key (0x0A) - Will use signature pubkey instead" :
               "Invalid 1-byte pubkey (0x0A)";
-            valid = false;
+            valid = isArculusWallet ? true : false; // Mark as valid for Arculus since this is expected behavior
           } else {
             format = `Non-standard length: ${pubkey.length} bytes (prefix: 0x${firstByte.toString(16)})`;
             compressed = false;
@@ -1136,38 +1136,6 @@ When signing, use the pubkey from the signature response instead of the account.
               >
                 <Copy size={14} />
               </Button>
-            </div>
-          )}
-
-          {/* PubKey Compression Indicator */}
-          {isConnected && (
-            <div className="flex items-center gap-2">
-              <span className="font-medium text-sm">PubKey:</span>
-              <div className="flex flex-wrap items-center gap-2">
-                {!pubKeyInfo ? (
-                  <Badge
-                    variant="outline"
-                    className="text-gray-700 border-gray-200 bg-gray-50 flex items-center gap-1"
-                  >
-                    <Key size={12} />
-                    Unknown
-                  </Badge>
-                ) : (
-                  <Badge
-                    variant="outline"
-                    className={`
-                      ${pubKeyInfo.valid ? 'text-green-700 border-green-200 bg-green-50' : 'text-yellow-700 border-yellow-200 bg-yellow-50'}
-                      flex items-center gap-1
-                    `}
-                  >
-                    <Key size={12} />
-                    {pubKeyInfo.valid ? (pubKeyInfo.compressed ? 'Valid' : 'Valid (Uncompressed)') : 'Invalid'}
-                  </Badge>
-                )}
-                {!pubKeyInfo && (
-                  <span className="text-xs text-yellow-600">Connect wallet to view key info</span>
-                )}
-              </div>
             </div>
           )}
 
